@@ -13,6 +13,22 @@ export class CarService {
     return this.cars;
   }
 
+  createCar(payload: {
+    brand: string;
+    price: number;
+    color: string;
+    year: number;
+  }) {
+    const newCar = {
+      id: this.cars.at(-1).id + 1 || 1,
+      ...payload,
+    };
+
+    this.cars.push(newCar);
+    
+    return newCar;
+  }
+
   getOneCar(id: number) {
     return this.cars.find((c) => c.id == id);
   }

@@ -14,3 +14,14 @@ type Query {
   getCarlist: [Car!]!
   getOneCar(id: Int!): Car!
 }
+
+type Mutation {
+  createCar(createCarDto: CreateCarDto!): Car!
+}
+
+input CreateCarDto {
+  brand: String
+  price: Int!
+  color: String!
+  year: Int!
+}
