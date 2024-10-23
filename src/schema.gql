@@ -12,4 +12,5 @@ type Car {
 
 type Query {
   getCarlist: [Car!]!
+  getOneCar(id: Int!): Car!
 }
