@@ -1,4 +1,5 @@
 import { appConfig } from '@config';
+import { CarModule } from '@modules';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -16,6 +17,7 @@ import { join } from 'path';
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    CarModule,
   ],
 })
 export class AppModule {}
