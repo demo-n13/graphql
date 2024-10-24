@@ -21,6 +21,7 @@ import { CarTypeModule } from './modules/car-type/car-type.module';
       // autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // -> for code first approach
       typePaths: ["./src/modules/**/*.gql"],
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      installSubscriptionHandlers: true,
     }),
     PrismaModule,
     CarModule,

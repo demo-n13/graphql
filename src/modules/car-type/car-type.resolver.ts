@@ -1,15 +1,26 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Subscription } from '@nestjs/graphql';
 import { CarTypeService } from './car-type.service';
 import { CreateCarTypeInput } from './dto/create-car-type.input';
 import { UpdateCarTypeInput } from './dto/update-car-type.input';
+import { PubSub } from 'graphql-subscriptions';
 
 @Resolver('CarType')
 export class CarTypeResolver {
-  constructor(private readonly carTypeService: CarTypeService) {}
+  private pubSub: PubSub;
+
+  constructor(private readonly carTypeService: CarTypeService) {
+    this.pubSub = new PubSub();
+  }
 
   @Mutation('createCarType')
-  create(@Args('createCarTypeInput') createCarTypeInput: CreateCarTypeInput) {
-    return this.carTypeService.create(createCarTypeInput);
+  async create(
+    @Args('createCarTypeInput') createCarTypeInput: CreateCarTypeInput,
+  ) {
+    const newCarType = await this.carTypeService.create(createCarTypeInput);
+
+    await this.pubSub.publish('carTypeAdded', { carTypeAdded: newCarType });
+
+    return newCarType;
   }
 
   @Query('carTypes')
@@ -23,12 +34,31 @@ export class CarTypeResolver {
   }
 
   @Mutation('updateCarType')
-  update(@Args('updateCarTypeInput') updateCarTypeInput: UpdateCarTypeInput) {
-    return this.carTypeService.update(updateCarTypeInput.id, updateCarTypeInput);
+  async update(
+    @Args('updateCarTypeInput') updateCarTypeInput: UpdateCarTypeInput,
+  ) {
+    const cartype = await this.carTypeService.update(
+      updateCarTypeInput.id,
+      updateCarTypeInput,
+    );
+
+    await this.pubSub.publish('carTypeUpdated', { carTypeUpdated: cartype });
+
+    return cartype;
   }
 
   @Mutation('removeCarType')
   remove(@Args('id') id: number) {
     return this.carTypeService.remove(id);
+  }
+
+  @Subscription('carTypeAdded')
+  carTypeAdded() {
+    return this.pubSub.asyncIterator('carTypeAdded');
+  }
+
+  @Subscription('carTypeUpdated')
+  carTypeUpdated() {
+    return this.pubSub.asyncIterator('carTypeUpdated');
   }
 }

@@ -23,3 +23,8 @@ type Mutation {
   updateCarType(updateCarTypeInput: UpdateCarTypeInput!): CarType!
   removeCarType(id: Int!): CarType
 }
+
+type Subscription {
+  carTypeAdded: CarType!
+  carTypeUpdated: CarType
+}
