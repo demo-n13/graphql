@@ -14,21 +14,24 @@ datasource db {
 }
 
 model Car {
-  id Int @default(autoincrement()) @db.Integer
-  brand String @db.VarChar() 
-  color String @db.VarChar()
-  year Int @db.Integer
-  price Int @db.Integer
+  id        Int    @default(autoincrement()) @db.Integer
+  brand     String @db.VarChar()
+  color     String @db.VarChar()
+  year      Int    @db.Integer
+  price     Int    @db.Integer
+  carTypeId Int    @db.Integer
+
+  carType CarType @relation(references: [id], fields: [carTypeId], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([id])
   @@map("cars")
 }
 
 model CarType {
-  id Int @default(autoincrement()) @db.Integer
+  id   Int    @default(autoincrement()) @db.Integer
   name String @db.VarChar()
+  car  Car[]
 
   @@id([id])
   @@map("car_types")
 }
-
