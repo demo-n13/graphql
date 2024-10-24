@@ -13,4 +13,7 @@ export class CreateCarDto {
 
   @Field(() => Int)
   year: number;
+
+  @Field(() => Int)
+  carTypeId: number;
 }

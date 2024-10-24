@@ -30,7 +30,7 @@ model Car {
 model CarType {
   id   Int    @default(autoincrement()) @db.Integer
   name String @db.VarChar()
-  car  Car[]
+  cars  Car[]
 
   @@id([id])
   @@map("car_types")

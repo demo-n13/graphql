@@ -1,6 +1,7 @@
 type CarType {
   id: ID
   name: String
+  car: [Car]
 }
 
 input CreateCarTypeInput {

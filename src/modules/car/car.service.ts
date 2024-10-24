@@ -1,35 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { Car } from './models';
+import { PrismaService } from '@prisma';
 
 @Injectable()
 export class CarService {
-  cars: Car[] = [
-    { id: 1, brand: 'BMW', price: 200000, color: 'black', year: 2023 },
-  ];
+  constructor(private prisma: PrismaService) {}
 
-  constructor() {}
-
-  getCarList() {
-    return this.cars;
+  async getCarList() {
+    return await this.prisma.car.findMany();
   }
 
-  createCar(payload: {
+  async createCar(payload: {
     brand: string;
     price: number;
     color: string;
     year: number;
+    carTypeId: number;
   }) {
-    const newCar = {
-      id: this.cars.at(-1).id + 1 || 1,
-      ...payload,
-    };
-
-    this.cars.push(newCar);
-    
-    return newCar;
+    return await this.prisma.car.create({
+      data: {
+        brand: payload.brand,
+        price: payload.price,
+        color: payload.color,
+        year: payload.year,
+        carTypeId: payload.carTypeId,
+      },
+    });
   }
 
-  getOneCar(id: number) {
-    return this.cars.find((c) => c.id == id);
+  async getOneCar(id: number) {
+    return await this.prisma.car.findFirst({ where: { id } });
   }
 }

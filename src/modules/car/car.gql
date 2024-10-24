@@ -4,6 +4,7 @@ type Car {
   year: Int!
   price: Int!
   color: String!
+  carTypeId: Int!
 }
 
 type Query {
@@ -20,4 +21,5 @@ input CreateCarDto {
   price: Int!
   color: String!
   year: Int!
+  carTypeId: Int!
 }

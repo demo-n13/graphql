@@ -16,7 +16,11 @@ export class CarTypeService {
   }
 
   async findAll() {
-    return await this.prisma.carType.findMany();
+    return await this.prisma.carType.findMany({
+      include: {
+        car: true
+      },
+    });
   }
 
   async findOne(id: number) {
